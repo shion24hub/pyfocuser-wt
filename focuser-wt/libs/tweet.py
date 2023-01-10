@@ -1,6 +1,8 @@
 import tweepy
 
 from libs.config import (
+    ACCESS_LEVEL,
+    MY_ACCOUNT_ID,
     API_KEY,
     API_SECRET,
     ACCESS_TOKEN,
@@ -8,16 +10,26 @@ from libs.config import (
     BEARER_TOKEN,
 )
 
-def ClientInfo() :
-    client = tweepy.Client(
-        bearer_token=BEARER_TOKEN,
-        consumer_key=API_KEY,
-        consumer_secret=API_SECRET,
-        access_token=ACCESS_TOKEN,
-        access_token_secret=ACCESS_TOKEN_SECRET,
-    )
-    return client
+# with Tweepy v2
+class v2 :
+    def clientInfo4v2(self) :
+        client = tweepy.Client(
+            bearer_token=BEARER_TOKEN,
+            consumer_key=API_KEY,
+            consumer_secret=API_SECRET,
+            access_token=ACCESS_TOKEN,
+            access_token_secret=ACCESS_TOKEN_SECRET,
+        )
+        return client
 
-def createTweet(message) :
-    tweet = ClientInfo().create_tweet(text=message)
-    return tweet
+    def createTweet4v2(self, message) :
+        tweet = self.clientInfo4v2().create_tweet(text=message)
+        return tweet
+
+# with Tweepy v1.1
+class v11 :
+    def createTweet4v11(self, message) :
+        pass
+    def createTweetWithMedia4v11(self) :
+        pass
+
