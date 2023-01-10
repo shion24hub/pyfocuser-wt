@@ -60,7 +60,7 @@ class Application(tkinter.Frame) :
             self.counter["fg"] = "#000000"
         
         # change counter.
-        self.counter["text"] = str(len(text))
+        self.counter["text"] = str(len(text)-1)
 
     def inputHandler(self) :
         text = self.text_box.get("1.0", tkinter.END)
