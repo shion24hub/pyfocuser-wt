@@ -1,5 +1,4 @@
 import tkinter
-import datetime
 
 from libs.tweet import createTweet
 
@@ -7,8 +6,8 @@ class Application(tkinter.Frame) :
     def __init__(self, root) :
         super().__init__(
             root,
-            width=380,
-            height=280,
+            width=500,
+            height=300,
             borderwidth=4,
             relief="groove",
         )
@@ -21,20 +20,40 @@ class Application(tkinter.Frame) :
 
         # textbox(tweet)
         self.text_box = tkinter.Entry(self)
-        self.text_box['width'] = 500
+        self.text_box['width'] = 100
         self.text_box.pack()
 
+        # count input length
+        length_btn = tkinter.Button(self)
+        length_btn.place(x=10, y=30)
+        length_btn["text"] = "count"
+        length_btn["command"] = self.countHandler
+
         # tweet button
-        submit_btn = tkinter.Button(self)
+        submit_btn = tkinter.Button(self, bg="#00bfff")
+        submit_btn.place(x=60, y=30)
         submit_btn["text"] = "tweet"
-        submit_btn["command"] = self.input_handler
-        submit_btn.pack()
+        submit_btn["command"] = self.inputHandler
+
+        # delete button
+        delete_btn = tkinter.Button(self, bg="#ff0000")
+        delete_btn.place(x=110, y=30)
+        delete_btn["text"] = "delete"
+        delete_btn["command"] = self.deleteHandler
 
         # message output
-        self.message = tkinter.Message(self)
-        self.message.pack()
+        self.message = tkinter.Message(
+            self,
+            aspect=500
+        )
+        self.message.place(x=200, y=30)
+    
+    def countHandler(self) :
+        text = self.text_box.get()
+        countMessage = "length : "
+        self.message["text"] = countMessage + str(len(text))
 
-    def input_handler(self) :
+    def inputHandler(self) :
         text = self.text_box.get()
 
         #length validation
@@ -43,14 +62,15 @@ class Application(tkinter.Frame) :
             self.message["text"] = lengthLimitMessage
             return
         
-        now = datetime.datetime.now()
-        text += "\n\nauto-tweet from GUI application [{}]".format(now)
+        text += "\n\nauto-tweet from focuser-wt."
         res = createTweet(message=text)
         if len(res.errors) == 0 :
             succeedMessage = "The tweet was posted successfully."
-            succeedMessage += "\n[{}]".format(now)
             self.message["text"] = succeedMessage
         else :
             errorMessage = "Some error occurred in the process of tweeting from the Twitter API."
-            errorMessage += "\n[{}]".format(now)
             self.message["text"] = errorMessage
+    
+    def deleteHandler(self) :
+        self.text_box.delete(0, tkinter.END)
+        
