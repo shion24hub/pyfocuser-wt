@@ -1,7 +1,7 @@
 import tkinter
 import datetime
 
-from lib.tweet import createTweet
+from libs.tweet import createTweet
 
 class Application(tkinter.Frame) :
     def __init__(self, root) :

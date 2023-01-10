@@ -1,7 +1,6 @@
 import tweepy
-import datetime
 
-from lib.config import (
+from libs.config import (
     API_KEY,
     API_SECRET,
     ACCESS_TOKEN,
@@ -20,6 +19,5 @@ def ClientInfo() :
     return client
 
 def createTweet(message) :
-    now = datetime.datetime.now()
     tweet = ClientInfo().create_tweet(text=message)
     return tweet
