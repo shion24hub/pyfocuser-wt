@@ -18,9 +18,10 @@ class Application(tkinter.Frame) :
         self.create_widgets()
     
     def create_widgets(self):
-        # textbox
+
+        # textbox(tweet)
         self.text_box = tkinter.Entry(self)
-        self.text_box['width'] = 750
+        self.text_box['width'] = 500
         self.text_box.pack()
 
         # tweet button
