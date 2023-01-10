@@ -18,26 +18,26 @@ class Application(tkinter.Frame) :
     
     def create_widgets(self):
 
-        # textbox(tweet)
-        self.text_box = tkinter.Entry(self)
-        self.text_box['width'] = 100
+        # textbox
+        self.text_box = tkinter.Text(self)
+        self.text_box.bind("<KeyRelease>", self.lenValidation)
+        self.text_box["height"] = 2
         self.text_box.pack()
 
-        # count input length
-        length_btn = tkinter.Button(self)
-        length_btn.place(x=10, y=30)
-        length_btn["text"] = "count"
-        length_btn["command"] = self.countHandler
+        # counter
+        self.counter = tkinter.Message(self)
+        self.counter.place(x=460, y=37)
+        self.counter["text"] = "0"
 
         # tweet button
-        submit_btn = tkinter.Button(self, bg="#00bfff")
-        submit_btn.place(x=60, y=30)
-        submit_btn["text"] = "tweet"
-        submit_btn["command"] = self.inputHandler
+        self.submit_btn = tkinter.Button(self, bg="#00bfff")
+        self.submit_btn.place(x=10, y=35)
+        self.submit_btn["text"] = "tweet"
+        self.submit_btn["command"] = self.inputHandler
 
         # delete button
         delete_btn = tkinter.Button(self, bg="#ff0000")
-        delete_btn.place(x=110, y=30)
+        delete_btn.place(x=60, y=35)
         delete_btn["text"] = "delete"
         delete_btn["command"] = self.deleteHandler
 
@@ -46,15 +46,24 @@ class Application(tkinter.Frame) :
             self,
             aspect=500
         )
-        self.message.place(x=200, y=30)
+        self.message.place(x=110, y=35)
     
-    def countHandler(self) :
-        text = self.text_box.get()
-        countMessage = "length : "
-        self.message["text"] = countMessage + str(len(text))
+    def lenValidation(self, event) :
+        text = self.text_box.get("1.0", tkinter.END)
+
+        # normal/disabled submit button and change counter color.
+        if len(text) >= 110 :
+            self.submit_btn["state"] = "disabled"
+            self.counter["fg"] = "#FF0000"
+        else :
+            self.submit_btn["state"] = "normal"
+            self.counter["fg"] = "#000000"
+        
+        # change counter.
+        self.counter["text"] = str(len(text))
 
     def inputHandler(self) :
-        text = self.text_box.get()
+        text = self.text_box.get("1.0", tkinter.END)
 
         #length validation
         if len(text) > 100 :
@@ -72,5 +81,6 @@ class Application(tkinter.Frame) :
             self.message["text"] = errorMessage
     
     def deleteHandler(self) :
-        self.text_box.delete(0, tkinter.END)
+        self.text_box.delete("1.0", tkinter.END)
+        self.counter["text"] = "0"
         
